@@ -67,9 +67,10 @@ python seed.py
 ```bash
 uvicorn app.main:app --reload --port 8000
 ```
-- Interactive Swagger UI: **[http://localhost:8000/docs](http://localhost:8000/docs)**
-- Alternative ReDoc UI: **[http://localhost:8000/redoc](http://localhost:8000/redoc)**
-- Health Check: **[http://localhost:8000/health](http://localhost:8000/health)**
+- **Interactive Web Dashboard**: **[http://localhost:8000/](http://localhost:8000/)** *(Click-and-play visual UI)*
+- **Interactive Swagger UI**: **[http://localhost:8000/docs](http://localhost:8000/docs)**
+- **Alternative ReDoc UI**: **[http://localhost:8000/redoc](http://localhost:8000/redoc)**
+- **Health Check**: **[http://localhost:8000/health](http://localhost:8000/health)**
 
 ### 4. Run the Terminal Demo (Optional)
 To see instant ranking results for all jobs and candidates in formatted terminal tables:
