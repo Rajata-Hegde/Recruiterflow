@@ -73,19 +73,24 @@ def get_job_matches(job_id: int, conn: sqlite3.Connection = Depends(get_db)):
     all_candidates = fetch_all_candidates(conn)
     matches = rank_candidates_for_job(all_candidates, job)
 
-    # Optionally persist top matches into match_history log table
-    for match in matches[:5]:
-        candidate_id = match["candidate"]["id"]
-        log_match_history(
-            conn=conn,
-            job_id=job_id,
-            candidate_id=candidate_id,
-            score=match["score"],
-            reason=match["reason"]
-        )
+    # Optionally persist top matches into match_history log table safely
+    try:
+        for match in matches[:5]:
+            candidate_id = match["candidate"]["id"]
+            log_match_history(
+                conn=conn,
+                job_id=job_id,
+                candidate_id=candidate_id,
+                score=match["score"],
+                reason=match["reason"]
+            )
+    except Exception:
+        # Non-critical audit logging should never fail the GET query response
+        pass
 
     return JobMatchesResponse(
         job=JobResponse(**job),
         total_candidates_evaluated=len(all_candidates),
         matches=matches
     )
+
