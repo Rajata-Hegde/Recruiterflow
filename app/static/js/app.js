@@ -17,12 +17,20 @@ let activeCandidateId = 1;
 let activeQuestionId = 1;
 let sqlQuestions = [];
 
-document.addEventListener("DOMContentLoaded", () => {
+function initApp() {
+    console.log("[RecruiterBot] Initializing frontend application...");
     setupTabs();
     loadJobs();
     loadCandidates();
     loadSQLDetective();
-});
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initApp);
+} else {
+    initApp();
+}
+
 
 // -----------------------------------------------------------------------------
 // Tab Navigation
