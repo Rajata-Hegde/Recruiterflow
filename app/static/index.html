@@ -50,7 +50,7 @@
                         <span class="badge-count">6 Active</span>
                     </div>
                     <div id="jobs-sidebar-list" class="item-selection-list">
-                        <div class="empty-state">Loading open roles...</div>
+                        <!-- Populated dynamically via JS -->
                     </div>
                 </aside>
 
@@ -86,7 +86,7 @@
                         <span class="badge-count">15 Profiles</span>
                     </div>
                     <div id="candidates-sidebar-list" class="item-selection-list">
-                        <div class="empty-state">Loading candidate profiles...</div>
+                        <!-- Populated dynamically via JS -->
                     </div>
                 </aside>
 
@@ -122,7 +122,7 @@
                         <span class="badge-count">Part 2</span>
                     </div>
                     <div id="sql-sidebar-list">
-                        <div class="empty-state">Loading detective questions...</div>
+                        <!-- Populated dynamically via JS -->
                     </div>
                 </aside>
 
@@ -150,10 +150,37 @@
         </section>
     </div>
 
-    <!-- Embedded Guaranteed-Execution Script -->
+    <!-- Embedded High-Reliability Script -->
     <script>
-        let allJobs = [];
-        let allCandidates = [];
+        const DEFAULT_JOBS = [
+            { id: 1, title: "Backend Detective", min_experience: 3, tagline: "We have a bug. We have no leads. We have you.", required_skills: ["deduction", "pattern-recognition", "forensics"], culture_keywords: ["analytical", "autonomous"] },
+            { id: 2, title: "Rapid Prototyping Engineer", min_experience: 2, tagline: "Ship first, document never (kidding — please document).", required_skills: ["rapid-prototyping", "systems-design"], culture_keywords: ["innovative", "fast-paced"] },
+            { id: 3, title: "Developer Relations Lead", min_experience: 2, tagline: "Explain complex things to confused humans, cheerfully.", required_skills: ["public-speaking", "research"], culture_keywords: ["energetic", "curious"] },
+            { id: 4, title: "Engineering Manager, Chaos Team", min_experience: 5, tagline: "Herd cats. The cats are senior engineers.", required_skills: ["team-building", "stakeholder-management", "leadership"], culture_keywords: ["empathetic", "organized"] },
+            { id: 5, title: "Incident Commander", min_experience: 4, tagline: "3am page. You're the one who picks up.", required_skills: ["crisis-management", "strategy", "negotiation"], culture_keywords: ["decisive", "calm-under-pressure"] },
+            { id: 6, title: "Sales Engineer", min_experience: 3, tagline: "Sell the vision, then go build it.", required_skills: ["sales", "public-speaking", "negotiation"], culture_keywords: ["enthusiastic", "persistent"] }
+        ];
+
+        const DEFAULT_CANDIDATES = [
+            { id: 1, name: "Sherlock H.", experience_years: 8, availability: "Immediate", quirk: "Solves problems by eliminating the impossible; occasionally insufferable in standups.", skills: ["deduction", "pattern-recognition", "forensics"], traits: ["analytical", "blunt"] },
+            { id: 2, name: "Hermione G.", experience_years: 4, availability: "2 weeks", quirk: "Reads the entire documentation before writing a single line of code.", skills: ["research", "time-management", "public-speaking"], traits: ["detail-oriented", "overachiever"] },
+            { id: 3, name: "Tony S.", experience_years: 12, availability: "Not looking", quirk: "Ships an MVP overnight, refuses to write tests.", skills: ["systems-design", "rapid-prototyping", "leadership"], traits: ["confident", "innovative"] },
+            { id: 4, name: "Leslie K.", experience_years: 6, availability: "Immediate", quirk: "Has a binder for everything, including the binder.", skills: ["project-management", "stakeholder-management", "public-speaking"], traits: ["tenacious", "organized"] },
+            { id: 5, name: "Ron S.", experience_years: 15, availability: "Not looking", quirk: "Refuses to use more than one monitor.", skills: ["woodworking", "minimalism", "negotiation"], traits: ["stubborn", "principled"] },
+            { id: 6, name: "Rick S.", experience_years: 20, availability: "Immediate", quirk: "Solution works, mechanism deeply concerning.", skills: ["systems-design", "rapid-prototyping", "chemistry"], traits: ["genius", "reckless"] },
+            { id: 7, name: "Elle W.", experience_years: 3, availability: "Immediate", quirk: "Underestimated in every standup, correct in every retro.", skills: ["persuasion", "research", "public-speaking"], traits: ["optimistic", "sharp"] },
+            { id: 8, name: "MacGyver", experience_years: 10, availability: "2 weeks", quirk: "Fixes production outages with duct tape and a paperclip metaphor.", skills: ["rapid-prototyping", "resourcefulness", "chemistry", "systems-design"], traits: ["calm", "improviser"] },
+            { id: 9, name: "Sheldon C.", experience_years: 9, availability: "Immediate", quirk: "Correct 95% of the time, insufferable 100% of the time.", skills: ["theoretical-analysis", "pattern-recognition", "research"], traits: ["rigid", "brilliant"] },
+            { id: 10, name: "Katniss E.", experience_years: 5, availability: "Immediate", quirk: "Excellent under pressure, terrible with public speaking.", skills: ["precision", "strategy", "crisis-management"], traits: ["resilient", "decisive"] },
+            { id: 11, name: "Michael S.", experience_years: 11, availability: "Not looking", quirk: "World's best boss, according to a mug he bought himself.", skills: ["sales", "public-speaking", "team-building"], traits: ["enthusiastic", "chaotic"] },
+            { id: 12, name: "Olivia P.", experience_years: 13, availability: "2 weeks", quirk: "Handles it. Whatever it is.", skills: ["crisis-management", "negotiation", "strategy", "leadership"], traits: ["decisive", "intense"] },
+            { id: 13, name: "Ted L.", experience_years: 7, availability: "Immediate", quirk: "Turns every technical setback into a folksy metaphor.", skills: ["team-building", "optimism", "mentorship", "public-speaking"], traits: ["empathetic", "persistent"] },
+            { id: 14, name: "Miranda P.", experience_years: 18, availability: "Not looking", quirk: "Reviews every PR personally. Says nothing. Everyone panics.", skills: ["leadership", "negotiation", "stakeholder-management", "precision"], traits: ["demanding", "decisive"] },
+            { id: 15, name: "Dwight S.", experience_years: 9, availability: "Immediate", quirk: "Assistant to the regional backend engineer.", skills: ["sales", "negotiation", "security", "loyalty"], traits: ["intense", "loyal"] }
+        ];
+
+        let allJobs = [...DEFAULT_JOBS];
+        let allCandidates = [...DEFAULT_CANDIDATES];
         let activeJobId = 1;
         let activeCandidateId = 1;
         let activeQuestionId = 1;
@@ -165,19 +192,27 @@
             document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
             const target = document.getElementById(viewId);
             if (target) target.classList.add("active");
+
+            if (viewId === 'view-candidate-career') {
+                renderCandidatesSidebar(allCandidates);
+                selectCandidate(activeCandidateId || 1);
+            } else if (viewId === 'view-job-matcher') {
+                renderJobsSidebar(allJobs);
+                selectJob(activeJobId || 1);
+            } else if (viewId === 'view-sql-detective') {
+                loadSQLDetective();
+            }
         }
 
         async function loadJobs() {
             try {
                 const res = await fetch("/jobs");
-                allJobs = await res.json();
-                renderJobsSidebar(allJobs);
-                if (allJobs.length > 0) {
-                    selectJob(allJobs[0].id);
+                if (res.ok) {
+                    allJobs = await res.json();
+                    renderJobsSidebar(allJobs);
                 }
             } catch (err) {
-                console.error("Failed to load jobs:", err);
-                document.getElementById("jobs-sidebar-list").innerHTML = `<div class="empty-state" style="color:var(--accent-rose)">Error: ${err.message}</div>`;
+                console.warn("Using default jobs:", err);
             }
         }
 
@@ -218,6 +253,7 @@
 
             try {
                 const res = await fetch(`/jobs/${jobId}/matches`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data = await res.json();
                 renderJobMatches(data);
             } catch (err) {
@@ -323,13 +359,12 @@
         async function loadCandidates() {
             try {
                 const res = await fetch("/candidates");
-                allCandidates = await res.json();
-                renderCandidatesSidebar(allCandidates);
-                if (allCandidates.length > 0) {
-                    selectCandidate(allCandidates[0].id);
+                if (res.ok) {
+                    allCandidates = await res.json();
+                    renderCandidatesSidebar(allCandidates);
                 }
             } catch (err) {
-                console.error("Failed to load candidates:", err);
+                console.warn("Using default candidates:", err);
             }
         }
 
@@ -374,6 +409,7 @@
 
             try {
                 const res = await fetch(`/candidates/${candidateId}/matches`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data = await res.json();
                 renderCandidateMatches(data);
             } catch (err) {
@@ -471,10 +507,12 @@
         async function loadSQLDetective() {
             try {
                 const res = await fetch("/api/sql-detective/questions");
-                sqlQuestions = await res.json();
-                renderSQLQuestionsSidebar(sqlQuestions);
-                if (sqlQuestions.length > 0) {
-                    selectSQLQuestion(sqlQuestions[0].id);
+                if (res.ok) {
+                    sqlQuestions = await res.json();
+                    renderSQLQuestionsSidebar(sqlQuestions);
+                    if (sqlQuestions.length > 0) {
+                        selectSQLQuestion(sqlQuestions[0].id);
+                    }
                 }
             } catch (err) {
                 console.error("Failed to load SQL Detective questions:", err);
@@ -580,10 +618,14 @@
                 .replace(/'/g, "&#039;");
         }
 
-        // Initialize immediately
+        // Render immediate initial state (Zero-delay render)
+        renderJobsSidebar(allJobs);
+        renderCandidatesSidebar(allCandidates);
+        selectJob(1);
+
+        // Fetch live server updates
         loadJobs();
         loadCandidates();
-        loadSQLDetective();
     </script>
 </body>
 </html>

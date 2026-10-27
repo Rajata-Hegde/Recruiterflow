@@ -10,11 +10,14 @@ from app.config import DB_PATH, DDL_FILE_PATH, SEED_FILE_PATH
 
 
 def get_db_connection(db_path: str = DB_PATH) -> sqlite3.Connection:
-    """Create a new SQLite database connection with row factory enabled."""
-    conn = sqlite3.connect(db_path)
+    """Create a new SQLite database connection with row factory and WAL mode enabled."""
+    conn = sqlite3.connect(db_path, timeout=15.0)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON;")
+    conn.execute("PRAGMA busy_timeout = 15000;")
+    conn.execute("PRAGMA journal_mode = WAL;")
     return conn
+
 
 
 def get_db() -> Generator[sqlite3.Connection, None, None]:
