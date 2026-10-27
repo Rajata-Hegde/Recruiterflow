@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecruiterBot — Intelligent Match Engine</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Navigation Bar -->
+        <header class="navbar">
+            <div class="brand">
+                <div class="logo-badge">🤖</div>
+                <div class="brand-text">
+                    <h1>RecruiterBot</h1>
+                    <p>
+                        <span>Candidate Matching Engine</span>
+                        <span class="sql-pill">Raw SQL Only</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="nav-actions">
+                <nav class="tab-group">
+                    <button class="nav-tab active" data-target="view-job-matcher">
+                        <span>🎯 Job Matcher</span>
+                    </button>
+                    <button class="nav-tab" data-target="view-candidate-career">
+                        <span>👤 Career Finder</span>
+                    </button>
+                    <button class="nav-tab" data-target="view-sql-detective">
+                        <span>🔍 SQL Detective</span>
+                    </button>
+                </nav>
+                <a href="/docs" target="_blank" class="btn-docs" title="Interactive OpenAPI / Swagger Documentation">
+                    <span>⚡ Swagger Docs</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- VIEW 1: Job Matcher (Core GET /jobs/{id}/matches) -->
+        <main id="view-job-matcher" class="view-panel active">
+            <div class="split-layout">
+                <!-- Sidebar: Job Requisitions -->
+                <aside class="panel-card">
+                    <div class="panel-header">
+                        <span class="panel-title">Open Requisitions</span>
+                        <span class="badge-count">6 Active</span>
+                    </div>
+                    <div id="jobs-sidebar-list" class="item-selection-list">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </aside>
+
+                <!-- Main Content: Ranked Candidates Stream -->
+                <section>
+                    <div id="job-active-banner" class="active-target-banner">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+
+                    <div class="panel-card" style="padding: 24px 28px;">
+                        <div class="panel-header" style="margin-bottom: 20px;">
+                            <span class="panel-title">Ranked Candidate Matches</span>
+                            <span class="badge-count" style="color: #6ee7b7;">Algorithm: 50% Skills | 25% Exp | 15% Culture | 10% Avail</span>
+                        </div>
+                        <div id="job-matches-container" class="matches-list">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- VIEW 2: Candidate Career Finder (Reverse GET /candidates/{id}/matches) -->
+        <section id="view-candidate-career" class="view-panel">
+            <div class="split-layout">
+                <!-- Sidebar: Fictional Candidates -->
+                <aside class="panel-card">
+                    <div class="panel-header">
+                        <span class="panel-title">Candidates</span>
+                        <span class="badge-count">15 Profiles</span>
+                    </div>
+                    <div id="candidates-sidebar-list" class="item-selection-list">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </aside>
+
+                <!-- Main Content: Ranked Jobs for Candidate -->
+                <section>
+                    <div id="candidate-active-banner" class="active-target-banner">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+
+                    <div class="panel-card" style="padding: 24px 28px;">
+                        <div class="panel-header" style="margin-bottom: 20px;">
+                            <span class="panel-title">Ranked Roles for Candidate</span>
+                            <span class="badge-count" style="color: #c7d2fe;">Reverse Matching Pipeline</span>
+                        </div>
+                        <div id="candidate-matches-container" class="matches-list">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <!-- VIEW 3: SQL Detective Live Playground (Part 2) -->
+        <section id="view-sql-detective" class="view-panel">
+            <div class="sql-detective-layout">
+                <!-- Sidebar: Question Selector -->
+                <aside class="panel-card">
+                    <div class="panel-header">
+                        <span class="panel-title">Detective Questions</span>
+                        <span class="badge-count">Part 2</span>
+                    </div>
+                    <div id="sql-sidebar-list">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </aside>
+
+                <!-- Main: SQL Query & Live Table Output -->
+                <section class="query-detail-panel">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                        <div>
+                            <h2 id="sql-detail-title" style="font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 700;">Question Details</h2>
+                            <p id="sql-detail-desc" style="font-size: 13.5px; color: var(--text-dim); margin-top: 4px;"></p>
+                        </div>
+                        <button class="btn-execute" onclick="executeCurrentSQL()">
+                            <span>▶ Execute SQL Live</span>
+                        </button>
+                    </div>
+
+                    <div class="sql-code-container">
+                        <pre class="sql-code"><code id="sql-code-display">-- Select a question to view query</code></pre>
+                    </div>
+
+                    <div id="sql-results-table-container">
+                        <div class="empty-state">Click <strong>"Execute SQL Live"</strong> to run this query against SQLite!</div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

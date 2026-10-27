@@ -11,3 +11,4 @@ DB_PATH = os.getenv("DATABASE_PATH", str(DB_DIR / "recruiterflow.db"))
 
 DDL_FILE_PATH = BASE_DIR / "app" / "ddl.sql"
 SEED_FILE_PATH = BASE_DIR / "app" / "seed.sql"
+STATIC_DIR = BASE_DIR / "app" / "static"
