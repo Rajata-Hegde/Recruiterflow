@@ -43,7 +43,7 @@ Key Deliverables:
 
 ### 1. Clone & Set Up Environment
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Rajata-Hegde/Recruiterflow.git
 cd recruiterflow
 
 # (Optional) Create and activate virtual environment
@@ -150,7 +150,7 @@ recruiterflow/
 
 The matching engine in `app/matcher.py` evaluates candidates and jobs across **4 core dimensions**, normalizing output to a **0 – 100 point scale**:
 
-$$\text{Total Score} = \text{Skills (0–50)} + \text{Experience (0–25)} + \text{Culture \& Traits (0–15)} + \text{Availability (0–10)}$$
+$$\text{Total Score} = \text{Skills (0–50)} + \text{Experience (0–25)} + \text{Culture and Traits (0–15)} + \text{Availability (0–10)}$$
 
 ### 1. Skill Fit Score (50% Weight, 0 – 50 pts)
 *Why 50%?* In technical recruitment, required skills are hard qualifiers. A candidate lacking core domain skills cannot perform the duties regardless of availability.
@@ -294,7 +294,7 @@ curl -X POST "http://localhost:8000/jobs" \
 
 ## Part 2: The SQL Detective Challenge
 
-All answers are provided in [`sql_detective.sql`](file:///c:/Users/rajat/OneDrive/Desktop/recruiterflow/sql_detective.sql). Run the automated verifier to execute and view the formatted output:
+All answers are provided in [`sql_detective.sql`](sql_detective.sql). Run the automated verifier to execute and view the formatted output:
 
 ```bash
 python run_sql_detective.py
